@@ -7,7 +7,7 @@
         </el-main>
         <el-main>
           <h2>Please type your name here: </h2>
-          <el-input v-model="input" style="width: 30%" placeholder="e.g. Gandalf, Rambo"></el-input>
+          <el-input v-model="input" style="width: 30%;" placeholder="e.g. Gandalf, Rambo"></el-input>
           <el-button @click="login" type="primary" style="background-color: #2F4F4F;">ENTER</el-button>
         </el-main>
         <el-footer>
@@ -39,9 +39,18 @@ export default {
     return {
       input: '',
       githubUrl: 'https://github.com/billg1990/dancing-without-stars-webgame',
-      aboutDialogVisible: false,
-      login () {
-        window.alert('')
+      aboutDialogVisible: false
+    }
+  },
+  methods: {
+    login () {
+      let pName = this.input.trim()
+      if (!pName) {
+        // change input box to red
+        this.$message('Type your player name!')
+      } else {
+        // start game
+        this.$router.push({ name: 'IndexPage', params: { name: pName } })
       }
     }
   }
