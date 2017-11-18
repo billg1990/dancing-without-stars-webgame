@@ -7,8 +7,14 @@
         </el-main>
         <el-main>
           <h2>Please type your name here: </h2>
-          <el-input v-model="input" style="width: 30%;" placeholder="e.g. Gandalf, Rambo"></el-input>
-          <el-button @click="login" type="primary" style="background-color: #2F4F4F;">ENTER</el-button>
+          <el-form :inline="true">
+            <el-form-item>
+              <el-input v-model="input" @keyup.enter.native="login" placeholder="e.g. Gandalf, Rambo"></el-input>
+            </el-form-item>
+            <el-form-item>
+              <el-button @click="login" type="primary" style="background-color: #2F4F4F;">ENTER</el-button>
+            </el-form-item>
+          </el-form>
         </el-main>
         <el-footer>
           <br />
