@@ -15,6 +15,10 @@
       </el-form-item>
     </el-form>
     <el-button type="primary" :loading="beginBtnLoading" @click="createGame('gameSettings')">Create</el-button>
+    <!-- the create game panel -->
+    <el-dialog title="Create a game" :visible.sync="panelVisible" :fullscreen="true" :before-close="handleCancel">
+
+    </el-dialog>
   </div>
 </template>
 
@@ -29,11 +33,12 @@ export default {
       },
       rules: {
         name: [
-          // required and not some spaces
-          { required: true, pattern: /\S.*/, message: 'Please input Activity name', trigger: 'blur' }
+          // make sure it contains something other than spaces
+          { required: true, pattern: /\S.*/, message: 'Please type your game name', trigger: 'blur' }
         ]
       },
       beginBtnLoading: false,
+      panelVisible: false,
       levelFormatTooltip: (value) => {
         if (value === 0) return 'easy'
         else if (value === 1) return 'intermediate'
@@ -47,9 +52,13 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           this.beginBtnLoading = true
-          // TODO redirect to page
+          this.panelVisible = true
+          this.beginBtnLoading = false
         }
       })
+    },
+    handleCancel (done) {
+      done()
     }
   }
 }
