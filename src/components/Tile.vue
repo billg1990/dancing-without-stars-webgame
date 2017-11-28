@@ -1,15 +1,19 @@
 <template>
   <el-button type="primary" class="Tile"
-    :style="{ width: this.width, height: this.height }"
-  >
-    <span :style="{ fontSize: '15vw', color: getContentColor(this.content) }">{{ this.content }}</span>
-  </el-button>
+    :style="{
+      width: this.tileLength + 'px',
+      height: this.tileLength + 'px',
+      fontSize: this.tileLength * 0.6 + 'px',
+      color: getContentColor(this.content),
+      marginLeft: '0px'
+    }"
+  >{{ this.content }}</el-button>
 </template>
 
 <script>
 export default {
   name: 'Tile',
-  props: ['width', 'height', 'content'],
+  props: ['tileLength', 'content'],
   methods: {
     getContentColor (content) {
       const colors = ['red', 'blue', 'green', 'orange', 'purple', 'chocolate', 'pink', 'yellow']
@@ -32,6 +36,7 @@ export default {
   box-sizing: unset;
   text-align: center;
   font-weight: bold;
-  border:1px solid black;
+  border:1px solid rgba(255,255,255,.5);
+  padding: 0px;
 }
 </style>
