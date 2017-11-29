@@ -53,7 +53,7 @@ class Game {
   okToPlaceAStar (pos) {
     let index = this.posToIndex(pos)
     // if this tile is not empty
-    if (this.board[index] != '') {
+    if (this.board[index] !== '') {
       return false
     }
     let ok = true
