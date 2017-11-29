@@ -17,14 +17,29 @@
     <el-button type="primary" :loading="beginBtnLoading" @click="createGame('gameSettings')">Create</el-button>
     <!-- the create game panel -->
     <el-dialog title="Create a game" :visible.sync="panelVisible" :fullscreen="true" :before-close="handleCancel">
-
+      <el-container>
+        <el-main width="80%">
+          <Board
+            :boardSize="10"
+            :boardLength="650"
+            :tiles="['1', '2', '']"
+            :tileClicked="tileClicked"
+          ></Board>
+        </el-main>
+        <el-aside width="20%">Aside</el-aside>
+      </el-container>
     </el-dialog>
   </div>
 </template>
 
 <script>
+import Board from './Board'
+
 export default {
   name: 'Pose',
+  components: {
+    'Board': Board
+  },
   data () {
     return {
       gameSettings: {
@@ -38,13 +53,7 @@ export default {
         ]
       },
       beginBtnLoading: false,
-      panelVisible: false,
-      levelFormatTooltip: (value) => {
-        if (value === 0) return 'easy'
-        else if (value === 1) return 'intermediate'
-        else if (value === 2) return 'hard'
-        else return 'hell'
-      }
+      panelVisible: false
     }
   },
   methods: {
@@ -59,6 +68,15 @@ export default {
     },
     handleCancel (done) {
       done()
+    },
+    levelFormatTooltip (value) {
+      if (value === 0) return 'easy'
+      else if (value === 1) return 'intermediate'
+      else if (value === 2) return 'hard'
+      else return 'hell'
+    },
+    tileClicked (index) {
+      console.log(index)
     }
   }
 }

@@ -7,13 +7,15 @@
       color: getContentColor(this.content),
       marginLeft: '0px'
     }"
+    @click="handleClick"
+    :value="index"
   >{{ this.content }}</el-button>
 </template>
 
 <script>
 export default {
   name: 'Tile',
-  props: ['tileLength', 'content'],
+  props: ['tileLength', 'content', 'index', 'tileClicked'],
   methods: {
     getContentColor (content) {
       const colors = ['red', 'blue', 'green', 'orange', 'purple', 'chocolate', 'pink', 'yellow']
@@ -26,6 +28,9 @@ export default {
       } else {
         return 'black'
       }
+    },
+    handleClick (event) {
+      this.tileClicked(event.target.value)
     }
   }
 }

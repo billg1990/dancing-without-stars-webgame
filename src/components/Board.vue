@@ -7,10 +7,11 @@
   >
     <Tile
       v-for="(tile, index) in tiles"
-      v-bind:tile="tile"
-      v-bind:index="index"
-      v-bind:key="index"
-      v-bind:tileLength="boardLength / boardSize" :content="tile"
+      :tile="tile"
+      :index="index"
+      :key="index"
+      :tileLength="boardLength / boardSize" :content="tile"
+      :tileClicked="tileClicked"
     ></Tile>
   </el-button-group>
 </template>
@@ -20,19 +21,9 @@ import Tile from './Tile'
 
 export default {
   name: 'Board',
-  props: ['boardSize', 'boardLength'],
+  props: ['boardSize', 'boardLength', 'tiles', 'tileClicked'],
   components: {
     'Tile': Tile
-  },
-  data () {
-    return {
-      tiles: []
-    }
-  },
-  created () {
-    for (let i = 0; i < this.boardSize * this.boardSize; i++) {
-      this.tiles.push('1')
-    }
   }
 }
 </script>
