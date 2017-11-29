@@ -12,6 +12,7 @@
       :key="index"
       :tileLength="boardLength / Math.sqrt(tiles.length)" :content="tile"
       :tileClicked="tileClicked"
+      :tileType="tileTypes[index]"
     ></Tile>
   </el-button-group>
 </template>
@@ -21,7 +22,7 @@ import Tile from './Tile'
 
 export default {
   name: 'Board',
-  props: ['boardLength', 'tiles', 'tileClicked'],
+  props: ['boardLength', 'tiles', 'tileTypes', 'tileClicked'],
   components: {
     'Tile': Tile
   }

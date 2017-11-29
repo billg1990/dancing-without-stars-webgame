@@ -1,5 +1,6 @@
 <template>
-  <el-button type="primary" class="Tile"
+  <el-button
+    :type="getBtnType()" class="Tile"
     :style="{
       width: this.tileLength + 'px',
       height: this.tileLength + 'px',
@@ -13,9 +14,12 @@
 </template>
 
 <script>
+// NOTE tileType
+// 0 - normal, 1 - special, 2 - disabled
+
 export default {
   name: 'Tile',
-  props: ['tileLength', 'content', 'index', 'tileClicked'],
+  props: ['tileLength', 'content', 'index', 'tileClicked', 'tileType'],
   methods: {
     getContentColor (content) {
       const colors = ['green', 'orange', 'purple', 'chocolate', 'pink', 'blue', 'red', 'yellow']
@@ -27,6 +31,15 @@ export default {
         return colors[groupIndex - 1]
       } else {
         return 'black'
+      }
+    },
+    getBtnType () {
+      if (this.tileType === 0) {
+        return 'primary'
+      } else if (this.tileType === 1) {
+        return 'success'
+      } else { // 2
+        return 'info'
       }
     },
     handleClick (event) {

@@ -35,6 +35,7 @@
           <Board
             :boardLength="vhTOpx(70)"
             :tiles="tiles"
+            :tileTypes="tileTypes"
             :tileClicked="tileClicked"
           ></Board>
         </el-main>
@@ -67,7 +68,8 @@ export default {
       beginBtnLoading: false,
       panelVisible: false,
       game: null,
-      tiles: []
+      tiles: [],
+      tileTypes: []
     }
   },
   methods: {
@@ -108,6 +110,7 @@ export default {
           this.game.generateDancers()
           // update graph
           this.tiles = this.game.getBoard()
+          this.tileTypes = this.game.getTileTypes()
           this.panelVisible = true
           this.beginBtnLoading = false
         }

@@ -19,8 +19,10 @@ class Game {
     this.k = k
     // initialize a clean board
     this.board = []
+    this.tileTypes = []
     for (let i = 0; i < n * n; i++) {
       this.board.push('')
+      this.tileTypes.push(0)
     }
     // set a bunch of status flags
     this.dancerGenerated = false
@@ -143,6 +145,11 @@ class Game {
   // as a string array
   getBoard () {
     return this.board
+  }
+
+  // get the tile types
+  getTileTypes () {
+    return this.tileTypes
   }
 }
 
