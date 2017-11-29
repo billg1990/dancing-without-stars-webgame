@@ -13,7 +13,7 @@ export default new Router({
       component: Greeting
     },
     {
-      path: '/index/:name',
+      path: '/hey/:name',
       name: 'IndexPage',
       component: IndexPage
     }
