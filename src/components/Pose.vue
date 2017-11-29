@@ -5,10 +5,22 @@
         <el-input v-model="gameSettings.name"></el-input>
       </el-form-item>
       <el-row>
-        <el-col>easy - 5 x 5, 2 color groups, 2 dancers each group</el-col>
-        <el-col>intermediate - 10 x 10, 2 color groups, 4 dancers each group</el-col>
-        <el-col>hard - 10 x 10, 4 color groups, 4 dancers each group</el-col>
-        <el-col>hell - 15 x 15, 5 color groups, 5 dancers each group</el-col>
+        <el-col :style="{
+          fontWeight: 'bold',
+          color: '#006400'
+        }">easy - 5 x 5, 2 color groups, 2 dancers each group</el-col>
+        <el-col :style="{
+          fontWeight: 'bold',
+          color: '#FFD700'
+        }">intermediate - 10 x 10, 2 color groups, 4 dancers each group</el-col>
+        <el-col :style="{
+          fontWeight: 'bold',
+          color: '#FFA500'
+        }">hard - 10 x 10, 4 color groups, 4 dancers each group</el-col>
+        <el-col :style="{
+          fontWeight: 'bold',
+          color: '#FF0000'
+        }">hell - 15 x 15, 5 color groups, 5 dancers each group</el-col>
       </el-row>
       <el-form-item label="Difficulty level" prop="level">
         <el-slider v-model="gameSettings.level" :max="3" :format-tooltip="levelFormatTooltip" show-stops></el-slider>
