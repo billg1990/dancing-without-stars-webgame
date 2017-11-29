@@ -18,15 +18,15 @@
     <!-- the create game panel -->
     <el-dialog title="Create a game" :visible.sync="panelVisible" :fullscreen="true" :before-close="handleCancel">
       <el-container>
-        <el-main width="80%">
-          <Board
+        <el-header :style="{ height: '5vh' }">Aside</el-header>
+        <el-main>
+          <Board :style="{ height: '75vh', width: '75vh' }"
             :boardSize="10"
-            :boardLength="650"
+            :boardLength="550"
             :tiles="['1', '2', '']"
             :tileClicked="tileClicked"
           ></Board>
         </el-main>
-        <el-aside width="20%">Aside</el-aside>
       </el-container>
     </el-dialog>
   </div>
