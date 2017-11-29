@@ -30,7 +30,7 @@ export default {
 
 <style>
 .Board {
-  border:1px solid black;
+  border: 4px solid rgb(95, 158, 160);
   box-sizing: unset;
 }
 </style>
