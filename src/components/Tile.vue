@@ -43,5 +43,6 @@ export default {
   font-weight: bold;
   border:1px solid rgba(255,255,255,.5);
   padding: 0px;
+  border-radius: 0px;
 }
 </style>

@@ -1,8 +1,8 @@
 <template>
   <el-button-group class="Board"
     :style="{
-      width: this.boardLength + this.boardSize * 1 + 1 + 'px',
-      height: this.boardLength + this.boardSize * 2 + 'px'
+      width: this.boardLength + Math.sqrt(this.tiles.length) * 1 + 1 + 'px',
+      height: this.boardLength + Math.sqrt(this.tiles.length) * 2 + 'px'
     }"
   >
     <Tile
@@ -10,7 +10,7 @@
       :tile="tile"
       :index="index"
       :key="index"
-      :tileLength="boardLength / boardSize" :content="tile"
+      :tileLength="boardLength / Math.sqrt(tiles.length)" :content="tile"
       :tileClicked="tileClicked"
     ></Tile>
   </el-button-group>
@@ -21,7 +21,7 @@ import Tile from './Tile'
 
 export default {
   name: 'Board',
-  props: ['boardSize', 'boardLength', 'tiles', 'tileClicked'],
+  props: ['boardLength', 'tiles', 'tileClicked'],
   components: {
     'Tile': Tile
   }

@@ -20,10 +20,9 @@
       <el-container>
         <el-header :style="{ height: '5vh' }">Aside</el-header>
         <el-main>
-          <Board :style="{ height: '75vh', width: '75vh' }"
-            :boardSize="10"
-            :boardLength="550"
-            :tiles="['1', '2', '']"
+          <Board
+            :boardLength="vhTOpx(70)"
+            :tiles="tiles"
             :tileClicked="tileClicked"
           ></Board>
         </el-main>
@@ -34,6 +33,7 @@
 
 <script>
 import Board from './Board'
+const board = require('../core/board')
 
 export default {
   name: 'Pose',
@@ -53,7 +53,8 @@ export default {
         ]
       },
       beginBtnLoading: false,
-      panelVisible: false
+      panelVisible: false,
+      tiles: board.generateCleanBoard(10)
     }
   },
   methods: {
@@ -65,6 +66,15 @@ export default {
           this.beginBtnLoading = false
         }
       })
+    },
+    vhTOpx (value) {
+      const w = window
+      const d = document
+      const e = d.documentElement
+      const g = d.getElementsByTagName('body')[0]
+      const y = w.innerHeight || e.clientHeight || g.clientHeight
+      const result = (y * value) / 100
+      return result
     },
     handleCancel (done) {
       done()
