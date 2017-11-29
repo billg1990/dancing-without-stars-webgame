@@ -18,7 +18,7 @@ export default {
   props: ['tileLength', 'content', 'index', 'tileClicked'],
   methods: {
     getContentColor (content) {
-      const colors = ['red', 'blue', 'green', 'orange', 'purple', 'chocolate', 'pink', 'yellow']
+      const colors = ['green', 'orange', 'purple', 'chocolate', 'pink', 'blue', 'red', 'yellow']
       if (content === '#' || content === '') {
         return 'black'
       }

@@ -22,6 +22,8 @@ class Game {
     for (let i = 0; i < n * n; i++) {
       this.board.push('')
     }
+    // set a bunch of status flags
+    this.dancerGenerated = false
     // keep track of stars positions
     this.stars = []
   }
@@ -29,6 +31,13 @@ class Game {
   /**
    * helpers
    */
+  // get a random integer between and includes min and max
+  getRandomIntInclusive (min, max) {
+    min = Math.ceil(min)
+    max = Math.floor(max)
+    return Math.floor(Math.random() * (max - min + 1)) + min
+  }
+
   // using position calculate the index
   // of this pos in this.board
   posToIndex (pos) {
@@ -52,7 +61,11 @@ class Game {
   // a star at this location
   okToPlaceAStar (pos) {
     let index = this.posToIndex(pos)
-    // if this tile is not empty
+    // check if this pos is inside board
+    if (!this.insideBoard(pos)) {
+      return false
+    }
+    // check if this tile is not empty
     if (this.board[index] !== '') {
       return false
     }
@@ -66,9 +79,46 @@ class Game {
     return ok
   }
 
+  // check if this position is inside board
+  insideBoard (pos) {
+    return pos.row >= 0 && pos.col >= 0 && this.n > pos.row && this.n > pos.col
+  }
+
+  // check if this dancer move is valid
+  // dancerMoveValid (posFrom, posTo) {
+  //   // check the move is within 1 manhattan distance
+  //   if (this.manhattanDistance(posFrom, posTo) > 1) {
+  //     return false
+  //   }
+  //   // check if both positions are inside board
+  //   if (!this.insideBoard(posFrom) || !this.insideBoard(posTo)) {
+  //     return false
+  //   }
+  //   // check if there is a dancer at from position
+  //   if () {
+  //
+  //   }
+  // }
+
   /**
    * Setters
    */
+  // generate random dancers and place them on the board
+  generateDancers () {
+    if (!this.dancerGenerated) {
+      for (let i = 0; i < this.c; i++) {
+        for (let j = 0; j < this.k;) {
+          let random = this.getRandomIntInclusive(0, this.n * this.n - 1)
+          if (this.board[random] === '') {
+            this.board[random] = (i + 1).toString()
+            j++
+          }
+        }
+      }
+      this.dancerGenerated = true
+    }
+  }
+
   placeAStar (pos) {
     let index = this.posToIndex(pos)
     this.board[index] = '#'

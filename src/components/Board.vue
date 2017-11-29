@@ -1,8 +1,8 @@
 <template>
   <el-button-group class="Board"
     :style="{
-      width: this.boardLength + Math.sqrt(this.tiles.length) * 1 + 1 + 'px',
-      height: this.boardLength + Math.sqrt(this.tiles.length) * 2 + 'px'
+      width: this.boardLength + Math.sqrt(this.tiles.length) * 1 + 2 + 'px',
+      height: this.boardLength + Math.sqrt(this.tiles.length) * 2 + 1 + 'px'
     }"
   >
     <Tile

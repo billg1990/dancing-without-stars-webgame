@@ -5,10 +5,10 @@
         <el-input v-model="gameSettings.name"></el-input>
       </el-form-item>
       <el-row>
-        <el-col>easy - 10 x 10, 2 groups, 2 colors</el-col>
-        <el-col>intermediate - 10 x 10, 2 groups, 2 colors</el-col>
-        <el-col>hard - 10 x 10, 2 groups, 2 colors</el-col>
-        <el-col>hell - 10 x 10, 2 groups, 2 colors</el-col>
+        <el-col>easy - 5 x 5, 2 color groups, 2 dancers each group</el-col>
+        <el-col>intermediate - 10 x 10, 2 color groups, 4 dancers each group</el-col>
+        <el-col>hard - 10 x 10, 4 color groups, 4 dancers each group</el-col>
+        <el-col>hell - 15 x 15, 5 color groups, 5 dancers each group</el-col>
       </el-row>
       <el-form-item label="Difficulty level" prop="level">
         <el-slider v-model="gameSettings.level" :max="3" :format-tooltip="levelFormatTooltip" show-stops></el-slider>
@@ -34,7 +34,6 @@
 <script>
 import Board from './Board'
 import Game from '../core/game'
-const game = new Game(10, 4, 5)
 
 export default {
   name: 'Pose',
@@ -55,14 +54,48 @@ export default {
       },
       beginBtnLoading: false,
       panelVisible: false,
-      tiles: game.getBoard()
+      game: null,
+      tiles: []
     }
   },
   methods: {
+    getGameParams () {
+      if (this.gameSettings.level === 0) {
+        return {
+          size: 5,
+          groups: 2,
+          dancers: 2
+        }
+      } else if (this.gameSettings.level === 1) {
+        return {
+          size: 5,
+          groups: 2,
+          dancers: 4
+        }
+      } else if (this.gameSettings.level === 2) {
+        return {
+          size: 10,
+          groups: 4,
+          dancers: 4
+        }
+      } else { // 3
+        return {
+          size: 15,
+          groups: 5,
+          dancers: 5
+        }
+      }
+    },
     createGame (formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           this.beginBtnLoading = true
+          // initialize game
+          let gameParams = this.getGameParams()
+          this.game = new Game(gameParams.size, gameParams.groups, gameParams.dancers)
+          this.game.generateDancers()
+          // update graph
+          this.tiles = this.game.getBoard()
           this.panelVisible = true
           this.beginBtnLoading = false
         }
