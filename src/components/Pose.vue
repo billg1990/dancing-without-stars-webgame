@@ -33,7 +33,8 @@
 
 <script>
 import Board from './Board'
-const board = require('../core/board')
+import Game from '../core/game'
+const game = new Game(10, 4, 5)
 
 export default {
   name: 'Pose',
@@ -54,7 +55,7 @@ export default {
       },
       beginBtnLoading: false,
       panelVisible: false,
-      tiles: board.generateCleanBoard(10)
+      tiles: game.getBoard()
     }
   },
   methods: {
