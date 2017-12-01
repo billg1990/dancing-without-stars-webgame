@@ -31,7 +31,8 @@
     <el-dialog title="Create a game" :visible.sync="panelVisible" :fullscreen="true" :before-close="handleCancel">
       <el-container>
         <el-header :style="{ height: '5vh' }">
-          <el-button type="success" size="large" round @click="start()">{{ startBtnText }}</el-button>
+          <span style="font-weight: bold; color: green;">{{ numOfStars }} / {{ maxNumOfStars }} </span>
+          <span style="font-weight: bold; color: red;"> timer: 0.00s</span>
         </el-header>
         <el-main>
           <Board
@@ -41,6 +42,9 @@
             :tileClicked="tileClicked"
           ></Board>
         </el-main>
+        <el-footer :style="{ height: '5vh' }">
+          <el-button type="success" size="large" round @click="start()">{{ startBtnText }}</el-button>
+        </el-footer>
       </el-container>
     </el-dialog>
   </div>
@@ -73,6 +77,8 @@ export default {
       },
       beginBtnLoading: false,
       panelVisible: false,
+      numOfStars: 0,
+      maxNumOfStars: 0,
       startBtnText: 'GO!',
       game: null,
       tiles: [],
@@ -114,7 +120,8 @@ export default {
           // initialize game
           let gameParams = this.getGameParams()
           this.game = new Game(gameParams.size, gameParams.groups, gameParams.dancers)
-          this.startBtnText = 'GO!'
+          // set max num of stars
+          this.maxNumOfStars = this.game.k
           // refresh
           this.refreshBoard()
           this.panelVisible = true
@@ -150,6 +157,8 @@ export default {
       return result
     },
     handleCancel (done) {
+      this.status = 'Initialized'
+      this.startBtnText = 'GO!'
       done()
     },
     levelFormatTooltip (value) {
@@ -162,7 +171,8 @@ export default {
       if (this.status === 'Initialized') {
         // pass, do nothing
       } else if (this.status === 'Started') {
-        this.game.toggleStar(index)
+        let change = this.game.toggleStar(index)
+        this.numOfStars += change
         this.refreshBoard()
       }
     }

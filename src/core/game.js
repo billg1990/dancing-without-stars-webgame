@@ -62,6 +62,10 @@ class Game {
   // check if it is ok to place
   // a star at this location
   okToPlaceAStar (pos) {
+    // first check if there are enough stars
+    if (this.stars.length >= this.k) {
+      return false
+    }
     let index = this.posToIndex(pos)
     // check if this pos is inside board
     if (!this.insideBoard(pos)) {
@@ -161,6 +165,7 @@ class Game {
           this.tileTypes[i] = 2
         }
       }
+      return -1
     } else if (this.okToPlaceAStar(pos)) {
       // place a star here
       this.placeAStar(pos)
@@ -174,8 +179,10 @@ class Game {
           this.tileTypes[i] = 2
         }
       }
+      return 1
     } else {
       // do nothing
+      return 0
     }
   }
 
