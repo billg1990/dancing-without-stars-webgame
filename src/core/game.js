@@ -48,8 +48,8 @@ class Game {
 
   // get the position from the index of the board array
   indexToPos (index) {
-    let row = index / this.n
-    let col = index % this.n
+    let row = Math.floor(index / this.n)
+    let col = Math.floor(index % this.n)
     return new Position(row, col)
   }
 
@@ -113,6 +113,7 @@ class Game {
           let random = this.getRandomIntInclusive(0, this.n * this.n - 1)
           if (this.board[random] === '') {
             this.board[random] = (i + 1).toString()
+            this.tileTypes[random] = 2
             j++
           }
         }
@@ -131,10 +132,50 @@ class Game {
     let index = this.posToIndex(pos)
     if (this.board[index] === '#') {
       this.board[index] = ''
-      let iToRemove = this.stars.indexOf(pos)
+      let iToRemove = -1
+      for (let i in this.stars) {
+        if (pos.row === this.stars[i].row && pos.col === this.stars[i].col) {
+          iToRemove = i
+          break
+        }
+      }
       if (iToRemove > -1) {
         this.stars.splice(iToRemove, 1)
       }
+    }
+  }
+
+  toggleStar (index) {
+    let pos = this.indexToPos(index)
+    // check if there is a star here
+    if (this.board[index] === '#') {
+      // cancel this star
+      this.cancelAStar(pos)
+      // update tile types
+      for (let i in this.tileTypes) {
+        if (this.board[i] === '#') {
+          this.tileTypes[i] = 1
+        } else if (this.okToPlaceAStar(this.indexToPos(i))) {
+          this.tileTypes[i] = 0
+        } else {
+          this.tileTypes[i] = 2
+        }
+      }
+    } else if (this.okToPlaceAStar(pos)) {
+      // place a star here
+      this.placeAStar(pos)
+      // update tile types
+      for (let i in this.tileTypes) {
+        if (this.board[i] === '#') {
+          this.tileTypes[i] = 1
+        } else if (this.okToPlaceAStar(this.indexToPos(i))) {
+          this.tileTypes[i] = 0
+        } else {
+          this.tileTypes[i] = 2
+        }
+      }
+    } else {
+      // do nothing
     }
   }
 

@@ -30,7 +30,9 @@
     <!-- the create game panel -->
     <el-dialog title="Create a game" :visible.sync="panelVisible" :fullscreen="true" :before-close="handleCancel">
       <el-container>
-        <el-header :style="{ height: '5vh' }">Aside</el-header>
+        <el-header :style="{ height: '5vh' }">
+          <el-button type="success" size="large" round @click="start()">{{ startBtnText }}</el-button>
+        </el-header>
         <el-main>
           <Board
             :boardLength="vhTOpx(70)"
@@ -55,6 +57,10 @@ export default {
   },
   data () {
     return {
+      // Initialized - When the board is initialized
+      // Started - When poser clicked GO!, generate dancers and begin counting
+      // Finished - When timeout or poser clicked on FINISH
+      status: 'Initialized',
       gameSettings: {
         name: '', // challenage name, can be duplicates
         level: 0 // 0 - easy, 1 - intermediate, 2 - hard, 3 - hell
@@ -67,6 +73,7 @@ export default {
       },
       beginBtnLoading: false,
       panelVisible: false,
+      startBtnText: 'GO!',
       game: null,
       tiles: [],
       tileTypes: []
@@ -107,14 +114,31 @@ export default {
           // initialize game
           let gameParams = this.getGameParams()
           this.game = new Game(gameParams.size, gameParams.groups, gameParams.dancers)
-          this.game.generateDancers()
-          // update graph
-          this.tiles = this.game.getBoard()
-          this.tileTypes = this.game.getTileTypes()
+          this.startBtnText = 'GO!'
+          // refresh
+          this.refreshBoard()
           this.panelVisible = true
           this.beginBtnLoading = false
         }
       })
+    },
+    start () {
+      this.status = 'Started'
+      // generate dancers
+      this.game.generateDancers()
+      // refresh board
+      this.refreshBoard()
+      // change btn text
+      this.startBtnText = 'FINISH'
+      // TODO start timer
+    },
+    refreshBoard () {
+      this.tileTypes = this.game.getTileTypes()
+      let newBoard = []
+      for (let i in this.game.getBoard()) {
+        newBoard.push(this.game.getBoard()[i])
+      }
+      this.tiles = newBoard
     },
     vhTOpx (value) {
       const w = window
@@ -135,7 +159,12 @@ export default {
       else return 'hell'
     },
     tileClicked (index) {
-      console.log(index)
+      if (this.status === 'Initialized') {
+        // pass, do nothing
+      } else if (this.status === 'Started') {
+        this.game.toggleStar(index)
+        this.refreshBoard()
+      }
     }
   }
 }
