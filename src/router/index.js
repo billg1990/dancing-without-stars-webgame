@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Greeting from '@/components/Greeting'
-import IndexPage from '@/components/Index'
+import Game from '@/components/Game'
 
 Vue.use(Router)
 
@@ -9,13 +8,8 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'Greeting',
-      component: Greeting
-    },
-    {
-      path: '/hey/:name',
-      name: 'IndexPage',
-      component: IndexPage
+      name: 'Game',
+      component: Game
     }
   ]
 })
