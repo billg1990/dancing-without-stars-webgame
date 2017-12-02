@@ -15,14 +15,14 @@
 
 <script>
 // NOTE tileType
-// 0 - normal, 1 - special, 2 - disabled
+// 0 - normal, 1 - special, 2 - disabled, 3 - warning
 
 export default {
   name: 'Tile',
   props: ['tileLength', 'content', 'index', 'tileClicked', 'tileType'],
   methods: {
     getContentColor (content) {
-      const colors = ['green', 'orange', 'purple', 'chocolate', 'pink', 'blue', 'red', 'yellow']
+      const colors = ['#483D8B', '#8B0000', '#4B0082', '#0000CD', '#808000', '#8B4513']
       if (content === '#' || content === '') {
         return 'black'
       }
@@ -38,8 +38,10 @@ export default {
         return 'primary'
       } else if (this.tileType === 1) {
         return 'success'
-      } else { // 2
+      } else if (this.tileType === 2) {
         return 'info'
+      } else { // 3
+        return 'warning'
       }
     },
     handleClick (event) {

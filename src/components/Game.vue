@@ -67,7 +67,9 @@
           </Board>
         </el-main>
         <el-footer>
-          <el-button type="success" size="large" round @click="handleMainBtn()">{{ mainBtnText }}</el-button>
+          <el-button type="success" size="large" :disabled="disableMainBtn" round
+            @click="handleMainBtn()">{{ mainBtnText }}
+          </el-button>
         </el-footer>
       </el-container>
     </el-dialog>
@@ -90,8 +92,14 @@ export default {
       githubUrl: 'https://github.com/billg1990/dancing-without-stars-webgame',
       aboutDialogVisible: false,
       gamePanelVisible: false,
+      // Initialized
+      // Spoiler
+      // SpoilerFinish
+      // Choreographer
+      // Finish
       gameStatus: 'Initialized',
       mainBtnText: 'GO!',
+      disableMainBtn: false,
       gameLevel: 0,
       game: null,
       maxNumOfStars: 0,
@@ -121,6 +129,12 @@ export default {
     handleMainBtn () {
       if (this.gameStatus === 'Initialized') {
         this.startPose()
+      } else if (this.gameStatus === 'Spoiler') {
+        // finish Spoiler
+        this.donePose()
+      } else if (this.gameStatus === 'SpoilerFinish') {
+        // choreographer start
+        this.startChoreographer()
       }
     },
     handleCancel (done) {
@@ -143,11 +157,12 @@ export default {
       return result
     },
     tileClicked (index) {
-      if (this.gameStatus === 'Initialized') {
-        // pass, do nothing
-      } else if (this.gameStatus === 'Started') {
+      if (this.gameStatus === 'Spoiler') {
         let change = this.game.toggleStar(index)
         this.numOfStars += change
+        this.refreshBoard()
+      } else if (this.gameStatus === 'Choreographer') {
+        this.game.toggleDancer(index)
         this.refreshBoard()
       }
     },
@@ -179,7 +194,7 @@ export default {
       }
     },
     startPose () {
-      this.gameStatus = 'Started'
+      this.gameStatus = 'Spoiler'
       // generate dancers
       this.game.generateDancers()
       // refresh board
@@ -187,6 +202,18 @@ export default {
       // change btn text
       this.mainBtnText = 'FINISH'
       // TODO start timer
+    },
+    donePose () {
+      this.gameStatus = 'SpoilerFinish'
+      this.game.donePose()
+      this.refreshBoard()
+      this.mainBtnText = 'Dance!'
+    },
+    startChoreographer () {
+      this.disableMainBtn = true
+      this.gameStatus = 'Choreographer'
+      this.game.startSolve()
+      this.refreshBoard()
     }
   }
 }

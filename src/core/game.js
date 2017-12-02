@@ -28,6 +28,11 @@ class Game {
     this.dancerGenerated = false
     // keep track of stars positions
     this.stars = []
+    // used by choreographer
+    this.step = 0
+    this.picked = -1 // keep track of which dancer is picked by choreographer
+    this.numMoved = 0 // number of dancers that have been moved in the current step
+    this.moved = new Map() // keep track of movements (movedTo, movedFrom)
   }
 
   /**
@@ -89,22 +94,6 @@ class Game {
   insideBoard (pos) {
     return pos.row >= 0 && pos.col >= 0 && this.n > pos.row && this.n > pos.col
   }
-
-  // check if this dancer move is valid
-  // dancerMoveValid (posFrom, posTo) {
-  //   // check the move is within 1 manhattan distance
-  //   if (this.manhattanDistance(posFrom, posTo) > 1) {
-  //     return false
-  //   }
-  //   // check if both positions are inside board
-  //   if (!this.insideBoard(posFrom) || !this.insideBoard(posTo)) {
-  //     return false
-  //   }
-  //   // check if there is a dancer at from position
-  //   if () {
-  //
-  //   }
-  // }
 
   /**
    * Setters
@@ -184,6 +173,138 @@ class Game {
       // do nothing
       return 0
     }
+  }
+
+  // spoiler finished placing stars
+  // should change all color back to default
+  donePose () {
+    for (let i in this.tileTypes) {
+      this.tileTypes[i] = 0
+    }
+  }
+
+  // start choreographer solving stage
+  startSolve () {
+    // make all the star into grey (unclickable)
+    for (let i in this.tileTypes) {
+      if (this.board[i] === '#') {
+        this.tileTypes[i] = 2
+      }
+    }
+  }
+
+  toggleDancer (index) {
+    if (this.picked === -1) {
+      if (this.board[index] === '' || this.board[index] === '#') {
+        // do nothing
+      } else if (this.moved.get(index)) {
+        // cancel movement
+        this.cancelDancerMove(index)
+        this.updateDancerTileTypes()
+      } else {
+        // pick this dancer
+        this.picked = index
+        this.updateDancerTileTypes()
+      }
+    } else {
+      if (this.board[index] === '#' || this.moved.get(index)) {
+        // do nothing
+      } else {
+        // make a move
+        // check if it is a swap
+        if (this.board[index] === '') {
+          // only add index to moved
+          this.numMoved += 1
+          this.moved.set(index, this.picked)
+        } else { // swap
+          this.numMoved += 2
+          this.moved.set(index, this.picked)
+          this.moved.set(this.picked, index)
+        }
+        let tmp = this.board[index]
+        this.board[index] = this.board[this.picked]
+        this.board[this.picked] = tmp
+        this.picked = -1
+        this.updateDancerTileTypes()
+        if (this.numMoved === this.c * this.k) {
+          this.gotoNextStep()
+        }
+      }
+    }
+  }
+
+  cancelDancerMove (index) {
+    // three types
+    // if thats a single move, just reverse it
+    // if thats a swap then swap back
+    // if there is another dancer at moveFrom then reverse that dancer first
+    let movedTo = index
+    let movedFrom = this.moved.get(movedTo)
+    if (this.board[movedFrom] === '') {
+      // just reverse it
+      this.numMoved -= 1
+      this.moved.delete(movedTo)
+      let tmp = this.board[movedTo]
+      this.board[movedTo] = this.board[movedFrom]
+      this.board[movedFrom] = tmp
+    } else if (this.moved.get(movedFrom) === movedTo) {
+      // swap back
+      this.numMoved -= 2
+      this.moved.delete(movedTo)
+      this.moved.delete(movedFrom)
+      let tmp = this.board[movedTo]
+      this.board[movedTo] = this.board[movedFrom]
+      this.board[movedFrom] = tmp
+    } else { // some dancer at movedFrom pos
+      this.cancelDancerMove(movedFrom) // recurrsivly
+      this.numMoved -= 1
+      this.moved.delete(movedTo)
+      let tmp = this.board[movedTo]
+      this.board[movedTo] = this.board[movedFrom]
+      this.board[movedFrom] = tmp
+    }
+  }
+
+  updateDancerTileTypes () {
+    for (let i in this.tileTypes) {
+      if (this.picked === -1) {
+        // nothing picked
+        // moved - yellow
+        // stars - grey
+        // other - blue
+        if (this.moved.get(i)) {
+          this.tileTypes[i] = 3
+        } else if (this.board[i] === '#') {
+          this.tileTypes[i] = 2
+        } else {
+          this.tileTypes[i] = 0
+        }
+      } else {
+        // picked - green
+        // stars - grey
+        // moved - grey
+        // within move distance - blue
+        // other - grey
+        if (this.moved.get(i)) {
+          this.tileTypes[i] = 2
+        } else if (this.board[i] === '#') {
+          this.tileTypes[i] = 2
+        } else if (this.picked === i) {
+          this.tileTypes[i] = 1
+        } else if (this.manhattanDistance(this.indexToPos(this.picked), this.indexToPos(i)) === 1) {
+          this.tileTypes[i] = 0
+        } else {
+          this.tileTypes[i] = 2
+        }
+      }
+    }
+  }
+
+  gotoNextStep () {
+    this.step += 1
+    this.numMoved = 0
+    this.moved.clear()
+    this.updateDancerTileTypes()
   }
 
   /**
