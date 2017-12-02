@@ -216,6 +216,9 @@ class Game {
           // only add index to moved
           this.numMoved += 1
           this.moved.set(index, this.picked)
+        } else if (this.picked === index) {
+          this.numMoved += 1
+          this.moved.set(index, this.picked)
         } else { // swap
           this.numMoved += 2
           this.moved.set(index, this.picked)
