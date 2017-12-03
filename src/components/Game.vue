@@ -37,6 +37,7 @@
           <el-button @click="aboutDialogVisible = true" type="text">
             <h3 style="color: #2c3e50">About</h3>
           </el-button>
+          <h3 style="color: #00FFFF">Use a mouse for better experience.</h3>
           <h3 style="color: #2c3e50">Copyright 2017 Taikun Guo</h3>
         </el-footer>
       </el-container>
