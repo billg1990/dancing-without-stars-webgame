@@ -38,7 +38,6 @@
             <h3 style="color: #2c3e50">About</h3>
           </el-button>
           <h3 style="color: #00FFFF">Use a mouse for better experience.</h3>
-          <h3 style="color: #2c3e50">Copyright 2017 Taikun Guo</h3>
         </el-footer>
       </el-container>
     </div>
@@ -50,10 +49,9 @@
         width="40%"
         height="70%">
         <div>
-          This is my final project of 2017 Fall NYU Heuristic Problem Solving class.
+          Dancing without the stars 2017.
         </div>
         <div>License: MIT</div>
-        <div>Github: <a :href="githubUrl">{{ githubUrl }}</a></div>
       </el-dialog>
     </div>
     <!-- the game panel -->
@@ -103,7 +101,6 @@ export default {
     return {
       spoiler: '',
       choreographer: '',
-      githubUrl: 'https://github.com/billg1990/dancing-without-stars-webgame',
       aboutDialogVisible: false,
       gamePanelVisible: false,
       // Initialized
