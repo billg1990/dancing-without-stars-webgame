@@ -61,7 +61,7 @@
         <el-header>
           <el-row :gutter="20" style="font-weight: bold;">
             <el-col :span="6">
-              <span style="color: #A52A2A;">timer: {{ timer.toFixed(2) }}</span>
+              <span style="color: #A52A2A;">timer: {{ time.toFixed(2) }}</span>
             </el-col>
             <el-col :span="6">
               <span style="color: #D2691E;">stars: {{ numOfStars }}/{{ maxNumOfStars }}</span>
@@ -118,7 +118,10 @@ export default {
       step: 0,
       numOfStars: 0,
       maxNumOfStars: 0,
-      timer: 120.00,
+      time: 120,
+      timer: null,
+      timerOn: false,
+      startTime: null,
       tiles: [],
       tileTypes: []
     }
@@ -225,6 +228,7 @@ export default {
       // change btn text
       this.mainBtnText = 'FINISH'
       // TODO start timer
+      this.startTimer()
     },
     donePose () {
       this.gameStatus = 'SpoilerFinish'
@@ -249,9 +253,35 @@ export default {
       this.disableMainBtn = false
       this.step = 0
       this.numOfStars = 0
+      this.resetTimer()
       let gameParams = this.getGameParams()
       this.game = new Game(gameParams.size, gameParams.groups, gameParams.dancers)
       this.refreshBoard()
+    },
+    resetTimer () {
+      this.time = 120
+      this.timer = null
+      this.timerOn = false
+      this.startTime = null
+    },
+    startTimer () {
+      this.timerOn = true
+      this.startTime = Date.now()
+      this.timer = setInterval(() => {
+        this.time = 120 - ((Date.now() - this.startTime) / 1000)
+        if (this.time <= 0) {
+          this.handleTimeOut()
+        }
+      }, 10)
+    },
+    stopTimer () {
+      if (this.timer) {
+        clearInterval(this.timer)
+        this.timerOn = false
+      }
+    },
+    handleTimeOut () {
+
     }
   }
 }
