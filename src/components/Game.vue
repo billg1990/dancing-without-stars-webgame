@@ -61,7 +61,7 @@
         <el-header>
           <el-row :gutter="20" style="font-weight: bold;">
             <el-col :span="6">
-              <span style="color: #A52A2A;">timer: {{ time.toFixed(2) }}</span>
+              <span style="color: #A52A2A;">timer: {{ time > 0 ? time.toFixed(2) : '0.00' }}</span>
             </el-col>
             <el-col :span="6">
               <span style="color: #D2691E;">stars: {{ numOfStars }}/{{ maxNumOfStars }}</span>
@@ -293,7 +293,15 @@ export default {
       }
     },
     handleTimeOut () {
-
+      if (this.gameStatus === 'Spoiler') {
+        this.choreoFinish()
+        this.$message.error('Spoiler timeout.')
+        this.step = 'Spoiler timeout'
+      } else if (this.gameStatus === 'Choreographer') {
+        this.choreoFinish()
+        this.$message.error('Choreographer timeout.')
+        this.step = 'Choreographer timeout'
+      }
     }
   }
 }
