@@ -58,6 +58,24 @@
     <!-- the game panel -->
     <el-dialog :title="gameStatus" :visible.sync="gamePanelVisible" :fullscreen="true" :before-close="handleCancel">
       <el-container>
+        <el-header>
+          <el-row :gutter="20" style="font-weight: bold;">
+            <el-col :span="6">
+              <span style="color: #A52A2A;">timer: {{ timer.toFixed(2) }}</span>
+            </el-col>
+            <el-col :span="6">
+              <span style="color: #D2691E;">stars: {{ numOfStars }}/{{ maxNumOfStars }}</span>
+            </el-col>
+            <el-col :span="6">
+              <span style="color: #556B2F;">step: {{ step }}</span>
+            </el-col>
+            <el-col :span="6">
+              <el-button type="success" size="large" :disabled="disableMainBtn" round
+                @click="handleMainBtn()">{{ mainBtnText }}
+              </el-button>
+            </el-col>
+          </el-row>
+        </el-header>
         <el-main>
           <Board
             :boardLength="vhTOpx(70)"
@@ -66,11 +84,6 @@
             :tileClicked="tileClicked">
           </Board>
         </el-main>
-        <el-footer>
-          <el-button type="success" size="large" :disabled="disableMainBtn" round
-            @click="handleMainBtn()">{{ mainBtnText }}
-          </el-button>
-        </el-footer>
       </el-container>
     </el-dialog>
   </div>
@@ -102,7 +115,10 @@ export default {
       disableMainBtn: false,
       gameLevel: 0,
       game: null,
+      step: 0,
+      numOfStars: 0,
       maxNumOfStars: 0,
+      timer: 120.00,
       tiles: [],
       tileTypes: []
     }
@@ -166,6 +182,7 @@ export default {
         this.refreshBoard()
       } else if (this.gameStatus === 'Choreographer') {
         let finished = this.game.toggleDancer(index)
+        this.step = this.game.getNumStep()
         this.refreshBoard()
         if (finished) {
           this.choreoFinish()
@@ -181,7 +198,7 @@ export default {
         }
       } else if (this.gameLevel === 1) {
         return {
-          size: 5,
+          size: 10,
           groups: 2,
           dancers: 4
         }
@@ -230,6 +247,8 @@ export default {
       this.gameStatus = 'Initialized'
       this.mainBtnText = 'GO!'
       this.disableMainBtn = false
+      this.step = 0
+      this.numOfStars = 0
       let gameParams = this.getGameParams()
       this.game = new Game(gameParams.size, gameParams.groups, gameParams.dancers)
       this.refreshBoard()

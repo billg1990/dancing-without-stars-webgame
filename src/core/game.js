@@ -494,6 +494,10 @@ class Game {
   getTileTypes () {
     return this.tileTypes
   }
+
+  getNumStep () {
+    return this.step
+  }
 }
 
 export default Game
