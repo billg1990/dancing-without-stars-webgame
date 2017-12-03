@@ -135,10 +135,13 @@ export default {
       } else if (this.gameStatus === 'SpoilerFinish') {
         // choreographer start
         this.startChoreographer()
+      } else if (this.gameStatus === 'Finish') {
+        this.resetGame()
       }
     },
     handleCancel (done) {
-      // TODO reset everything
+      // reset everything
+      this.resetGame()
       done()
     },
     levelFormatTooltip (value) {
@@ -162,9 +165,11 @@ export default {
         this.numOfStars += change
         this.refreshBoard()
       } else if (this.gameStatus === 'Choreographer') {
-        this.game.toggleDancer(index)
+        let finished = this.game.toggleDancer(index)
         this.refreshBoard()
-        this.game.checkChoreographerFinish()
+        if (finished) {
+          this.choreoFinish()
+        }
       }
     },
     getGameParams () {
@@ -214,6 +219,19 @@ export default {
       this.disableMainBtn = true
       this.gameStatus = 'Choreographer'
       this.game.startSolve()
+      this.refreshBoard()
+    },
+    choreoFinish () {
+      this.gameStatus = 'Finish'
+      this.disableMainBtn = false
+      this.mainBtnText = 'A new game!'
+    },
+    resetGame () {
+      this.gameStatus = 'Initialized'
+      this.mainBtnText = 'GO!'
+      this.disableMainBtn = false
+      let gameParams = this.getGameParams()
+      this.game = new Game(gameParams.size, gameParams.groups, gameParams.dancers)
       this.refreshBoard()
     }
   }

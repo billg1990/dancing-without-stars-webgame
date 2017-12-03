@@ -97,7 +97,72 @@ class Game {
 
   // check if choreographer has reached the goal
   checkChoreographerFinish () {
+    // results should contain all the possible lines
+    let results = new Map()
+    for (let i in this.board) {
+      if (this.board[i] !== '' && this.board[i] !== '#') {
+        let rs = this.explore(this.indexToPos(i), new Map())
+        if (rs) {
+          rs = Array.from(rs)
+          rs = rs.sort()
+          let key = rs.join()
+          results.set(key, rs)
+        }
+      }
+    }
+    let lines = []
+    results.forEach((v, k, m) => { lines.push(v) })
+    return this.checkResultLines(lines, Array.from(this.board))
+  }
 
+  // check if some lines in this result set
+  // can be all the dancers on this board
+  checkResultLines (resultLines, board) {
+    if (!board || !resultLines) {
+      return false
+    }
+    if (resultLines.length === 0) {
+      // go through the board
+      // check if every dancer
+      // has been removed
+      let noDancer = true
+      for (let i in board) {
+        if (board[i] !== '' && board[i] !== '#') {
+          noDancer = false
+          break
+        }
+      }
+      return noDancer
+    }
+    let cur = resultLines.pop()
+    // see what will happen if we delete this line
+    let rs = this.checkResultLines(resultLines, this.removeLineFromBoard(cur, board))
+    if (rs) {
+      return true
+    }
+    // see what will happen if we does not delete this line
+    rs = this.checkResultLines(resultLines, board)
+    if (rs) {
+      return true
+    }
+    // seems like not working
+    return false
+  }
+
+  // remove a line from a board
+  // return a board without that line
+  // or null if this line is not on this board at all
+  removeLineFromBoard (line, board) {
+    let newBoard = Array.from(board)
+    for (let i in line) {
+      if (newBoard[line[i]] === '' || newBoard[line[i]] === '#') {
+        newBoard = null
+        break
+      } else {
+        newBoard[line[i]] = ''
+      }
+    }
+    return newBoard
   }
 
   // explore from a spot
@@ -296,6 +361,7 @@ class Game {
     }
   }
 
+  // return true if game is finish
   toggleDancer (index) {
     if (this.picked === -1) {
       if (this.board[index] === '' || this.board[index] === '#') {
@@ -334,9 +400,11 @@ class Game {
         this.updateDancerTileTypes()
         if (this.numMoved === this.c * this.k) {
           this.gotoNextStep()
+          return this.checkChoreographerFinish()
         }
       }
     }
+    return false
   }
 
   cancelDancerMove (index) {
