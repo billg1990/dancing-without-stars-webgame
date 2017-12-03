@@ -164,6 +164,7 @@ export default {
       } else if (this.gameStatus === 'Choreographer') {
         this.game.toggleDancer(index)
         this.refreshBoard()
+        this.game.checkChoreographerFinish()
       }
     },
     getGameParams () {

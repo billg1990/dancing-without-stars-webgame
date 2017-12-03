@@ -95,6 +95,109 @@ class Game {
     return pos.row >= 0 && pos.col >= 0 && this.n > pos.row && this.n > pos.col
   }
 
+  // check if choreographer has reached the goal
+  checkChoreographerFinish () {
+
+  }
+
+  // explore from a spot
+  // and check from each direction
+  // see if there is lines that contain
+  // each of each color and all colors
+  explore (pos, map) {
+    if (this.board[this.posToIndex(pos)] === '' || this.board[this.posToIndex(pos)] === '#') {
+      // this is not a dancer
+      return null
+    } else {
+      let dancer = this.board[this.posToIndex(pos)]
+      if (map.get(dancer)) {
+        return null
+      } else {
+        // add this one to the map
+        let newMap = new Map(map)
+        newMap.set(dancer, this.posToIndex(pos))
+        if (newMap.size === this.c) {
+          let indexes = new Set()
+          newMap.forEach((v, k, m) => {
+            indexes.add(v)
+          })
+          return indexes
+        } else {
+          // continue to the next one
+          // up
+          let up = new Position(pos.row - 1, pos.col)
+          if (this.insideBoard(up)) {
+            // check if up is already in map
+            let inPath = false
+            map.forEach((v, k, m) => {
+              if (v === this.posToIndex(up)) {
+                inPath = true
+              }
+            })
+            if (!inPath) {
+              let rs = this.explore(up, newMap)
+              if (rs) {
+                return rs
+              }
+            }
+          }
+          // down
+          let down = new Position(pos.row + 1, pos.col)
+          if (this.insideBoard(down)) {
+            // check if down is already in map
+            let inPath = false
+            map.forEach((v, k, m) => {
+              if (v === this.posToIndex(down)) {
+                inPath = true
+              }
+            })
+            if (!inPath) {
+              let rs = this.explore(down, newMap)
+              if (rs) {
+                return rs
+              }
+            }
+          }
+          // left
+          let left = new Position(pos.row, pos.col - 1)
+          if (this.insideBoard(left)) {
+            // check if left is already in map
+            let inPath = false
+            map.forEach((v, k, m) => {
+              if (v === this.posToIndex(left)) {
+                inPath = true
+              }
+            })
+            if (!inPath) {
+              let rs = this.explore(left, newMap)
+              if (rs) {
+                return rs
+              }
+            }
+          }
+          // right
+          let right = new Position(pos.row, pos.col + 1)
+          if (this.insideBoard(right)) {
+            // check if right is already in map
+            let inPath = false
+            map.forEach((v, k, m) => {
+              if (v === this.posToIndex(right)) {
+                inPath = true
+              }
+            })
+            if (!inPath) {
+              let rs = this.explore(right, newMap)
+              if (rs) {
+                return rs
+              }
+            }
+          }
+          return null
+        }
+      }
+    }
+  }
+
   /**
    * Setters
    */
