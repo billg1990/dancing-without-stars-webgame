@@ -149,10 +149,19 @@ export default {
       if (this.gameStatus === 'Initialized') {
         this.startPose()
       } else if (this.gameStatus === 'Spoiler') {
-        // finish Spoiler
-        this.donePose()
+        if (this.numOfStars === 0) {
+          this.$message({
+            message: 'You haven\'t placed any star.',
+            type: 'warning'
+          })
+        } else {
+          // finish Spoiler
+          this.stopTimer()
+          this.donePose()
+        }
       } else if (this.gameStatus === 'SpoilerFinish') {
         // choreographer start
+        this.resetTimer()
         this.startChoreographer()
       } else if (this.gameStatus === 'Finish') {
         this.resetGame()
@@ -227,7 +236,7 @@ export default {
       this.refreshBoard()
       // change btn text
       this.mainBtnText = 'FINISH'
-      // TODO start timer
+      // start timer
       this.startTimer()
     },
     donePose () {
@@ -241,8 +250,10 @@ export default {
       this.gameStatus = 'Choreographer'
       this.game.startSolve()
       this.refreshBoard()
+      this.startTimer()
     },
     choreoFinish () {
+      this.stopTimer()
       this.gameStatus = 'Finish'
       this.disableMainBtn = false
       this.mainBtnText = 'A new game!'
@@ -259,6 +270,7 @@ export default {
       this.refreshBoard()
     },
     resetTimer () {
+      this.stopTimer()
       this.time = 120
       this.timer = null
       this.timerOn = false
