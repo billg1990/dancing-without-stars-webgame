@@ -2,6 +2,9 @@
 
 > Human playable dancing without stars web game, for NYU HPS course.
 
+Here is the original game platform I implemented for class competing.
+<https://github.com/billg1990/dancing-without-stars>
+
 ## Build Setup
 
 ``` bash
