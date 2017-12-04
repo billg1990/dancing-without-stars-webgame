@@ -101,12 +101,15 @@ class Game {
     let results = new Map()
     for (let i in this.board) {
       if (this.board[i] !== '' && this.board[i] !== '#') {
-        let rs = this.explore(this.indexToPos(i), new Map())
-        if (rs) {
-          rs = Array.from(rs)
-          rs = rs.sort()
-          let key = rs.join()
-          results.set(key, rs)
+        let rsList = this.explore(this.indexToPos(i), new Map())
+        for (let j in rsList) {
+          let rs = rsList[j]
+          if (rs) {
+            rs = Array.from(rs)
+            rs = rs.sort()
+            let key = rs.join()
+            results.set(key, rs)
+          }
         }
       }
     }
@@ -172,11 +175,11 @@ class Game {
   explore (pos, map) {
     if (this.board[this.posToIndex(pos)] === '' || this.board[this.posToIndex(pos)] === '#') {
       // this is not a dancer
-      return null
+      return []
     } else {
       let dancer = this.board[this.posToIndex(pos)]
       if (map.get(dancer)) {
-        return null
+        return []
       } else {
         // add this one to the map
         let newMap = new Map(map)
@@ -186,9 +189,10 @@ class Game {
           newMap.forEach((v, k, m) => {
             indexes.add(v)
           })
-          return indexes
+          return [indexes]
         } else {
           // continue to the next one
+          let rsList = []
           // up
           let up = new Position(pos.row - 1, pos.col)
           if (this.insideBoard(up)) {
@@ -201,9 +205,7 @@ class Game {
             })
             if (!inPath) {
               let rs = this.explore(up, newMap)
-              if (rs) {
-                return rs
-              }
+              rsList.push.apply(rsList, rs)
             }
           }
           // down
@@ -218,9 +220,7 @@ class Game {
             })
             if (!inPath) {
               let rs = this.explore(down, newMap)
-              if (rs) {
-                return rs
-              }
+              rsList.push.apply(rsList, rs)
             }
           }
           // left
@@ -235,9 +235,7 @@ class Game {
             })
             if (!inPath) {
               let rs = this.explore(left, newMap)
-              if (rs) {
-                return rs
-              }
+              rsList.push.apply(rsList, rs)
             }
           }
           // right
@@ -252,12 +250,10 @@ class Game {
             })
             if (!inPath) {
               let rs = this.explore(right, newMap)
-              if (rs) {
-                return rs
-              }
+              rsList.push.apply(rsList, rs)
             }
           }
-          return null
+          return rsList
         }
       }
     }
