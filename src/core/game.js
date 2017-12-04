@@ -378,6 +378,10 @@ class Game {
     } else {
       if (this.board[index] === '#' || this.moved.get(index)) {
         // do nothing
+      } else if (!this.insideBoard(this.indexToPos(index))) {
+        // do nothing
+      } else if (this.manhattanDistance(this.indexToPos(this.picked), this.indexToPos(index)) > 1) {
+        // do nothing
       } else {
         // make a move
         // check if it is a swap
