@@ -26,12 +26,40 @@
                 color: '#A52A2A'
               }">hell - 15 x 15, 5 color groups, 5 dancers each group</el-col>
             </el-row>
-            <el-slider v-model="gameLevel" :max="3"
-              :format-tooltip="levelFormatTooltip" show-stops>
-            </el-slider>
           </div>
-          <el-button @click="openGamePanel" size="large" type="primary"
-            style="width: 20vw; background-color: #2F4F4F;">ENTER</el-button>
+          <el-form>
+            <el-form-item>
+              <el-row type="flex" class="row-bg" justify="center">
+                <el-col :span="6">
+                  <el-slider v-model="gameLevel" :max="3"
+                    :format-tooltip="levelFormatTooltip" show-stops>
+                  </el-slider>
+                </el-col>
+              </el-row>
+            </el-form-item>
+            <el-form-item>
+              <el-row type="flex" class="row-bg" justify="center">
+                <el-col :span="6">
+                  <el-input placeholder="Spoiler" v-model="spoiler"></el-input>
+                </el-col>
+              </el-row>
+            </el-form-item>
+            <el-form-item>
+              <el-row type="flex" class="row-bg" justify="center">
+                <el-col :span="6">
+                  <el-input placeholder="Choreographer" v-model="choreographer"></el-input>
+                </el-col>
+              </el-row>
+            </el-form-item>
+            <el-form-item>
+              <el-row type="flex" class="row-bg" justify="center">
+                <el-col :span="6">
+                  <el-button @click="openGamePanel" size="large" type="primary"
+                    style="width: 20vw; background-color: #2F4F4F;">ENTER</el-button>
+                </el-col>
+              </el-row>
+            </el-form-item>
+          </el-form>
         </el-main>
         <el-footer>
           <el-button @click="aboutDialogVisible = true" type="text">
@@ -126,14 +154,21 @@ export default {
   },
   methods: {
     openGamePanel () {
-      // initialize game
-      let gameParams = this.getGameParams()
-      this.game = new Game(gameParams.size, gameParams.groups, gameParams.dancers)
-      // set max num of stars
-      this.maxNumOfStars = this.game.k
-      // refresh
-      this.refreshBoard()
-      this.gamePanelVisible = true
+      if (this.spoiler.trim() === '' || this.choreographer.trim() === '') {
+        this.$message({
+          message: 'Type your names first.',
+          type: 'warning'
+        })
+      } else {
+        // initialize game
+        let gameParams = this.getGameParams()
+        this.game = new Game(gameParams.size, gameParams.groups, gameParams.dancers)
+        // set max num of stars
+        this.maxNumOfStars = this.game.k
+        // refresh
+        this.refreshBoard()
+        this.gamePanelVisible = true
+      }
     },
     refreshBoard () {
       this.tileTypes = this.game.getTileTypes()
