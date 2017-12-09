@@ -45,7 +45,7 @@ export default {
       }
     },
     handleClick (event) {
-      this.tileClicked(event.target.value)
+      this.tileClicked(this.index)
     }
   }
 }
