@@ -440,13 +440,13 @@ class Game {
   }
 
   updateDancerTileTypes () {
-    for (let i in this.tileTypes) {
+    for (let i = 0; i < this.board.length; i++) {
       if (this.picked === -1) {
         // nothing picked
         // moved - yellow
         // stars - grey
         // other - blue
-        if (this.moved.get(i)) {
+        if (this.moved.has(i)) {
           this.tileTypes[i] = 3
         } else if (this.board[i] === '#') {
           this.tileTypes[i] = 2
@@ -459,7 +459,7 @@ class Game {
         // moved - grey
         // within move distance - blue
         // other - grey
-        if (this.moved.get(i)) {
+        if (this.moved.has(i)) {
           this.tileTypes[i] = 2
         } else if (this.board[i] === '#') {
           this.tileTypes[i] = 2
