@@ -399,8 +399,7 @@ class Game {
         this.picked = -1
         this.updateDancerTileTypes()
         if (this.numMoved === this.c * this.k) {
-          this.gotoNextStep()
-          return this.checkChoreographerFinish()
+          return this.nextStep()
         }
       }
     }
@@ -479,6 +478,11 @@ class Game {
     this.numMoved = 0
     this.moved.clear()
     this.updateDancerTileTypes()
+  }
+
+  nextStep () {
+    this.gotoNextStep()
+    return this.checkChoreographerFinish()
   }
 
   /**

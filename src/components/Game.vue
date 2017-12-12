@@ -206,6 +206,14 @@ export default {
         this.startChoreographer()
       } else if (this.gameStatus === 'Finish') {
         this.resetGame()
+      } else if (this.gameStatus === 'Choreographer') {
+        // go to the next step
+        let finish = this.game.nextStep()
+        this.step += 1
+        this.refreshBoard()
+        if (finish) {
+          this.choreoFinish()
+        }
       }
     },
     handleCancel (done) {
@@ -287,7 +295,8 @@ export default {
       this.mainBtnText = 'Dance!'
     },
     startChoreographer () {
-      this.disableMainBtn = true
+      this.disableMainBtn = false
+      this.mainBtnText = 'Finish Step'
       this.gameStatus = 'Choreographer'
       this.game.startSolve()
       this.refreshBoard()
