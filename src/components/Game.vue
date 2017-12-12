@@ -37,7 +37,7 @@
                 </el-col>
               </el-row>
             </el-form-item>
-            <el-form-item>
+            <!-- <el-form-item>
               <el-row type="flex" class="row-bg" justify="center">
                 <el-col :span="6">
                   <el-input placeholder="Spoiler" v-model="spoiler"></el-input>
@@ -50,7 +50,7 @@
                   <el-input placeholder="Choreographer" v-model="choreographer"></el-input>
                 </el-col>
               </el-row>
-            </el-form-item>
+            </el-form-item> -->
             <el-form-item>
               <el-row type="flex" class="row-bg" justify="center">
                 <el-col :span="6">
@@ -127,8 +127,8 @@ export default {
   },
   data () {
     return {
-      spoiler: '',
-      choreographer: '',
+      // spoiler: '',
+      // choreographer: '',
       aboutDialogVisible: false,
       gamePanelVisible: false,
       // Initialized
@@ -154,21 +154,29 @@ export default {
   },
   methods: {
     openGamePanel () {
-      if (this.spoiler.trim() === '' || this.choreographer.trim() === '') {
-        this.$message({
-          message: 'Type your names first.',
-          type: 'warning'
-        })
-      } else {
-        // initialize game
-        let gameParams = this.getGameParams()
-        this.game = new Game(gameParams.size, gameParams.groups, gameParams.dancers)
-        // set max num of stars
-        this.maxNumOfStars = this.game.k
-        // refresh
-        this.refreshBoard()
-        this.gamePanelVisible = true
-      }
+      // initialize game
+      let gameParams = this.getGameParams()
+      this.game = new Game(gameParams.size, gameParams.groups, gameParams.dancers)
+      // set max num of stars
+      this.maxNumOfStars = this.game.k
+      // refresh
+      this.refreshBoard()
+      this.gamePanelVisible = true
+      // if (this.spoiler.trim() === '' || this.choreographer.trim() === '') {
+      //   this.$message({
+      //     message: 'Type your names first.',
+      //     type: 'warning'
+      //   })
+      // } else {
+      //   // initialize game
+      //   let gameParams = this.getGameParams()
+      //   this.game = new Game(gameParams.size, gameParams.groups, gameParams.dancers)
+      //   // set max num of stars
+      //   this.maxNumOfStars = this.game.k
+      //   // refresh
+      //   this.refreshBoard()
+      //   this.gamePanelVisible = true
+      // }
     },
     refreshBoard () {
       this.tileTypes = this.game.getTileTypes()
