@@ -28,15 +28,13 @@
             </el-row>
           </div>
           <el-form>
-            <el-form-item>
-              <el-row type="flex" class="row-bg" justify="center">
-                <el-col :span="6">
-                  <el-slider v-model="gameLevel" :max="3"
-                    :format-tooltip="levelFormatTooltip" show-stops>
-                  </el-slider>
-                </el-col>
-              </el-row>
-            </el-form-item>
+            <el-row type="flex" class="row-bg" justify="center">
+              <el-col :span="6">
+                <el-slider v-model="gameLevel" :max="3"
+                  :format-tooltip="levelFormatTooltip" show-stops>
+                </el-slider>
+              </el-col>
+            </el-row>
             <!-- <el-form-item>
               <el-row type="flex" class="row-bg" justify="center">
                 <el-col :span="6">
