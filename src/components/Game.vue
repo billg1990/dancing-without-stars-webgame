@@ -205,9 +205,13 @@ export default {
       } else if (this.gameStatus === 'Finish') {
         this.resetGame()
       } else if (this.gameStatus === 'Choreographer') {
-        // go to the next step
-        let finish = this.game.nextStep()
-        this.step += 1
+        let finish = false
+        if (this.game.numMoved !== 0) {
+          // go to the next step
+          finish = this.game.nextStep()
+          this.step += 1
+        }
+
         this.refreshBoard()
         if (finish) {
           this.choreoFinish()
