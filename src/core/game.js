@@ -413,7 +413,7 @@ class Game {
     // if there is another dancer at moveFrom then reverse that dancer first
     let movedTo = index
     let movedFrom = this.moved.get(movedTo)
-    if (this.board[movedFrom] === '') {
+    if (this.board[movedFrom] === '' || movedTo === movedFrom) {
       // just reverse it
       this.numMoved -= 1
       this.moved.delete(movedTo)
