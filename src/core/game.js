@@ -139,12 +139,12 @@ class Game {
     }
     let cur = resultLines.pop()
     // see what will happen if we delete this line
-    let rs = this.checkResultLines(resultLines, this.removeLineFromBoard(cur, board))
+    let rs = this.checkResultLines(Array.from(resultLines), this.removeLineFromBoard(cur, board))
     if (rs) {
       return true
     }
     // see what will happen if we does not delete this line
-    rs = this.checkResultLines(resultLines, board)
+    rs = this.checkResultLines(Array.from(resultLines), board)
     if (rs) {
       return true
     }
